@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'ticket_details.dart'; // Assurez-vous que ce nom est correct
+
+class TicketItem extends StatelessWidget {
+  final String ticketId; // Ajoutez ce paramètre
+  final String title;
+  final DateTime date;
+  final String status;
+  final String sujet;
+  final String probleme;
+  final String categori;
+  final String email;
+  final String telephone;
+
+  TicketItem({
+    required this.ticketId, // Ajoutez ce paramètre
+    required this.title,
+    required this.date,
+    required this.status,
+    required this.sujet,
+    required this.probleme,
+    required this.categori,
+    required this.email,
+    required this.telephone,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(DateFormat('dd MMM yyyy à HH:mm').format(date)), // Format the date
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Chip(
+              label: Text(
+                status,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              backgroundColor: _getStatusColor(status),
+            ),
+            IconButton(
+              icon: const Icon(Icons.arrow_forward_ios),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TicketDetailsPage(
+                      ticketId: ticketId, // Passez le ticketId ici
+                      sujet: sujet,
+                      probleme: probleme,
+                      categorie: categori,
+                      email: email,
+                      telephone: telephone,
+                      date: date,
+                      reponse: '', // Passez une valeur par défaut ou vide ici
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'ATTENTE':
+        return Colors.orange;
+      case 'EN COURS':
+        return Colors.blue;
+      case 'RESOLU':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+}
